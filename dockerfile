@@ -1,3 +1,4 @@
 FROM scratch
- COPY ./hello /hello
- ENTRYPOINT ["/hello"]
+ COPY ./go-server /go-server
+ ENTRYPOINT ["/go-server"]
+
