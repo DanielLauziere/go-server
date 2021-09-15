@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	images "github.com/daniellauziere/go-server/internal/images"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
 
