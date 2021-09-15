@@ -1,4 +1,7 @@
 FROM scratch
- COPY ./go-server /go-server
+ COPY . .
  ENTRYPOINT ["/go-server"]
 
+EXPOSE 80
+
+CMD ["/go-server"]

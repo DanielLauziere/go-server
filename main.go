@@ -5,7 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	images "github.com/daniellauziere/go-server/internal/images"
+	// images "github.com/daniellauziere/go-server/internal/images"
+	"github.com/daniellauziere/go-server/internal/images"
 	"github.com/gorilla/mux"
 )
 
