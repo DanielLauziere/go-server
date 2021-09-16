@@ -1,13 +1,14 @@
 package images
 
 import (
-	// "bytes"
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
-	// "github.com/chai2010/webp"
-	// "github.com/disintegration/imaging"
+
+	"github.com/chai2010/webp"
+	"github.com/disintegration/imaging"
 )
 
 // Error - Error message and debuging object
@@ -21,22 +22,22 @@ type ImageAsset struct {
 }
 
 // SaveToWebp -
-// func SaveToWebp(imageFileString string, webPString string) {
+func SaveToWebp(imageFileString string, webPString string) {
 
-// 	var buf bytes.Buffer
-// 	var err error
+	var buf bytes.Buffer
+	var err error
 
-// 	m, err := imaging.Open(imageFileString)
+	m, err := imaging.Open(imageFileString)
 
-// 	// Encode lossless webp
-// 	if err = webp.Encode(&buf, m, &webp.Options{Lossless: true}); err != nil {
-// 		log.Println(err)
-// 	}
-// 	if err = ioutil.WriteFile(webPString, buf.Bytes(), 0666); err != nil {
-// 		log.Println(err)
-// 	}
+	// Encode lossless webp
+	if err = webp.Encode(&buf, m, &webp.Options{Lossless: true}); err != nil {
+		log.Println(err)
+	}
+	if err = ioutil.WriteFile(webPString, buf.Bytes(), 0666); err != nil {
+		log.Println(err)
+	}
 
-// }
+}
 
 // UploadFile for uploading images
 func UploadFile(w http.ResponseWriter, r *http.Request) string {
@@ -74,12 +75,12 @@ func UploadFile(w http.ResponseWriter, r *http.Request) string {
 
 	tempFile.Write(fileBytes)
 
-	// src, err := imaging.Open(tempFile.Name())
+	src, err := imaging.Open(tempFile.Name())
 
 	// Resize srcImage to size = 128x128px using the Lanczos filter.
-	// resized1200 := imaging.Resize(src, 1200, 0, imaging.Lanczos)
-	// resized800 := imaging.Resize(src, 800, 0, imaging.Lanczos)
-	// resized500 := imaging.Resize(src, 500, 0, imaging.Lanczos)
+	resized1200 := imaging.Resize(src, 1200, 0, imaging.Lanczos)
+	resized800 := imaging.Resize(src, 800, 0, imaging.Lanczos)
+	resized500 := imaging.Resize(src, 500, 0, imaging.Lanczos)
 
 	r.ParseForm()
 	// x := r.Form.Get("blogName")
@@ -88,31 +89,31 @@ func UploadFile(w http.ResponseWriter, r *http.Request) string {
 	unusedName := handler.Filename
 
 	// Save the resulting image as JPEG.
-	// err = imaging.Save(resized1200, "static-files/fallbackImages/lg/"+unusedName+".jpg")
+	err = imaging.Save(resized1200, "static-files/fallbackImages/lg/"+unusedName+".jpg")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Fatalf("failed to save image: %v", err)
 	}
 
-	// SaveToWebp("static-files/fallbackImages/lg/"+unusedName+".jpg", "static-files/images/lg/"+unusedName+".webp")
+	SaveToWebp("static-files/fallbackImages/lg/"+unusedName+".jpg", "static-files/images/lg/"+unusedName+".webp")
 
 	// Save the resulting image as JPEG.
-	// err = imaging.Save(resized800, "static-files/fallbackImages/md/"+unusedName+".jpg")
+	err = imaging.Save(resized800, "static-files/fallbackImages/md/"+unusedName+".jpg")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Fatalf("failed to save image: %v", err)
 	}
 
-	// SaveToWebp("static-files/fallbackImages/md/"+unusedName+".jpg", "static-files/images/md/"+unusedName+".webp")
+	SaveToWebp("static-files/fallbackImages/md/"+unusedName+".jpg", "static-files/images/md/"+unusedName+".webp")
 
 	// Save the resulting image as JPEG.
-	// err = imaging.Save(resized500, "static-files/fallbackImages/sm/"+unusedName+".jpg")
+	err = imaging.Save(resized500, "static-files/fallbackImages/sm/"+unusedName+".jpg")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Fatalf("failed to save image: %v", err)
 	}
 
-	// SaveToWebp("static-files/fallbackImages/sm/"+unusedName+".jpg", "static-files/images/sm/"+unusedName+".webp")
+	SaveToWebp("static-files/fallbackImages/sm/"+unusedName+".jpg", "static-files/images/sm/"+unusedName+".webp")
 
 	w.WriteHeader(http.StatusOK)
 	return unusedName
